@@ -9,17 +9,31 @@
 </head>
 
 <body>
-  <div id="app">
-    <h1>Ahorcado</h1>
-    <img src="" alt="" id="img-ahorcado">
-    <form id="form-ahorcado">
-      <p id="word-result"></p>
-      <p>Introduce una letra</p>
-      <input type="text" id="letter" required maxlength="1">
-      <button type="submit">Verificar Letra</button>
+  <div class="flex justify-center my-4">
+    <div class="w-1/2">
+      <div class="my-4 p-4 border border-1 shadow-xl">
+        <h1 class="text-center font-bold text-4xl my-4 uppercase">Ahorcado</h1>
+        <p class="flex justify-center">
+          <img
+            src="https://play-lh.googleusercontent.com/8kcyCd2wFrUqaLGWuJJ4FhpqeH0IJv7MNWHNyYwiasskTT0kgB7r0B_XU2bop4oofhQt"
+            alt="" id="img-ahorcado" class="h-56 w-56">
+        </p>
 
-    </form>
+        <form id="form-ahorcado">
+          <p id="word-result" class="text-center my-4 font-bold uppercase text-3xl"></p>
+          <div class="flex">
+            <p>Introduce una letra:</p>
+            <input class="block border border-1" type="text" id="letter" required maxlength="1">
+          </div>
+
+          <button type="submit" class="text-lg mt-4 w-full text-center bg-green-500 text-white p-3 rounded-md font-bold ">Verificar Letra</button>
+
+        </form>
+      </div>
+    </div>
+
   </div>
+
   <script type="module" src="/src/main.ts"></script>
 </body>
 
