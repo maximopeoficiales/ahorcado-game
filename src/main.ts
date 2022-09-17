@@ -4,14 +4,11 @@ import './style.css'
 // Utilities
 const $ = (selector: string) => {
   const element = document.querySelector(selector);
-  if (element) {
-    return element;
-  } else {
-    throw new Error(`No existe el elemento: ${selector}`);
-  }
+  if (element) return element;
+  throw new Error(`No existe el elemento: ${selector}`);
 };
 
-const getRandomArbitrary = (min: number, max: number) => {
+const getRandomNumber = (min: number, max: number) => {
   return parseInt((Math.random() * (max - min) + min).toString());
 }
 
@@ -27,20 +24,19 @@ const replaceAt = (value: string, index: number, replacement: string) => {
   a[index] = replacement;
   return a.join("");
 }
-const findWordIndex = (searchValue: string, word: string) => {
+
+const findIndexInWord = (searchValue: string, word: string) => {
   let indexWord = [];
   for (let index = 0; index < word.length; index++) {
-
     if (word[index] == searchValue.toLowerCase()) {
       indexWord.push(index);
     }
   }
   return indexWord;
 }
-const replaceWord = (palabraConGuiones: string, word: string, letter: string,) => {
 
-
-  const indexArray = findWordIndex(letter, word);
+const replaceWordByLetter = (palabraConGuiones: string, word: string, letter: string,) => {
+  const indexArray = findIndexInWord(letter, word);
   console.log(indexArray);
   indexArray.forEach(e => {
     palabraConGuiones = replaceAt(palabraConGuiones, e, letter)
@@ -49,7 +45,7 @@ const replaceWord = (palabraConGuiones: string, word: string, letter: string,) =
   return {
     resultNotSpace: palabraConGuiones,
     resultWithSpace: palabraConGuiones.split("").join(" "),
-    notFound: indexArray.length === 0 ? true : false
+    notFound: indexArray.length === 0 || false
   }
 };
 
@@ -57,43 +53,44 @@ const replaceWord = (palabraConGuiones: string, word: string, letter: string,) =
 
 const words = ["palo", "pepito", "pedro", "ramdom"];
 
-const secretWord = words[getRandomArbitrary(0, words.length)];
+const secretWord = words[getRandomNumber(0, words.length)];
 console.log({ secretWord });
 
-const wordResultInput = $("#word-result");
+const wordResultParrafo = $("#word-result");
 
-wordResultInput.innerHTML = getRamdomWordWithGuiones(secretWord);
+wordResultParrafo.innerHTML = getRamdomWordWithGuiones(secretWord);
 
 let palabraConGuionesSinEspacio = getRamdomWordWithGuionesNotSpace(secretWord);
 
 const imgAhorcado = $("#img-ahorcado") as HTMLImageElement;
 let counterError = 1;
-$("#form-ahorcado").addEventListener("submit", (e) => {
+
+function submitForm(e: Event) {
   e.preventDefault();
   const letter = $("#letter") as HTMLInputElement;
   const letterValue = letter.value.toLowerCase();
 
-  const { notFound, resultWithSpace, resultNotSpace } = replaceWord(palabraConGuionesSinEspacio, secretWord, letterValue);
+  const { notFound, resultWithSpace, resultNotSpace } = replaceWordByLetter(palabraConGuionesSinEspacio, secretWord, letterValue);
 
   if (notFound) {
     // ++1
-    if (!(counterError == 6)) {
-      counterError = counterError + 1;
-      imgAhorcado.style.display = "block";
-      imgAhorcado.src = `./ahorcado/${counterError}.png`;
-      console.log("no es encontraron resultados");
-    } else {
+    if (counterError == 6) {
       alert("Fin del juego")
       setTimeout(() => {
-        location.reload();
-      }, 3000);
+        location.replace("https://cdn.memegenerator.es/imagenes/memes/full/4/14/4149174.jpg");
+      }, 2000);
+    } else {
+      counterError++;
+      imgAhorcado.src = `./ahorcado/${counterError}.png`;
     }
+
   }
 
   palabraConGuionesSinEspacio = resultNotSpace;
-  wordResultInput.innerHTML = resultWithSpace;
+  wordResultParrafo.innerHTML = resultWithSpace;
 
   // console.log("result:", palabraConGuiones);
 
-});
+}
+$("#form-ahorcado").addEventListener("submit",submitForm);
 
