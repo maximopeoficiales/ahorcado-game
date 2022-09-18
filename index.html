@@ -5,14 +5,14 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vite + TS</title>
+  <title>HangMan Game</title>
 </head>
 
 <body>
   <div class="flex justify-center my-4">
     <div class="w-1/2">
-      <div class="my-4 p-4 border border-1 shadow-xl">
-        <h1 class="text-center font-bold text-4xl my-4 uppercase">Ahorcado</h1>
+      <div class="my-4 p-5 border border-1 shadow-xl rounded-3xl">
+        <h1 class="text-center font-bold text-4xl my-4 uppercase">HangMan</h1>
         <p class="flex justify-center">
           <img
             src="https://play-lh.googleusercontent.com/8kcyCd2wFrUqaLGWuJJ4FhpqeH0IJv7MNWHNyYwiasskTT0kgB7r0B_XU2bop4oofhQt"
@@ -21,12 +21,13 @@
 
         <form id="form-ahorcado">
           <p id="word-result" class="text-center my-4 font-bold uppercase text-3xl"></p>
-          <div class="flex">
-            <p>Introduce una letra:</p>
-            <input class="block border border-1" type="text" id="letter" required maxlength="1">
+          <div class="flex gap-2 items-center ">
+            <p class="w-3/4 font-semibold">Insert one letter:</p>
+            <input class="w-1/4 block border border-2 rounded-lg p-1" type="text" id="letter" required maxlength="1">
           </div>
 
-          <button type="submit" class="text-lg mt-4 w-full text-center bg-green-500 text-white p-3 rounded-md font-bold ">Verificar Letra</button>
+          <button type="submit"
+            class="text-lg mt-4 w-full text-center bg-green-500 text-white p-3 rounded-md font-bold hover:bg-green-700 transition-all ease-out  duration-500">Verify Letter</button>
 
         </form>
       </div>

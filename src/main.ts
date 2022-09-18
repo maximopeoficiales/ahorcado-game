@@ -1,96 +1,73 @@
+import './main.css'
 import './style.css'
+import { words } from './common/data';
+import { $, getRamdomWordWithHyphens, getRamdomWordWithHyphensNotSpace, getRandomNumber, removeAccents, replaceWordByLetter } from './common/utils';
 
-
-// Utilities
-const $ = (selector: string) => {
-  const element = document.querySelector(selector);
-  if (element) return element;
-  throw new Error(`No existe el elemento: ${selector}`);
-};
-
-const getRandomNumber = (min: number, max: number) => {
-  return parseInt((Math.random() * (max - min) + min).toString());
+const IMAGES = {
+  GOKU_TA_BIEN: "https://los40.cl/wp-content/uploads/2022/05/dia-de-goku.jpg",
+  LOGO: "https://play-lh.googleusercontent.com/8kcyCd2wFrUqaLGWuJJ4FhpqeH0IJv7MNWHNyYwiasskTT0kgB7r0B_XU2bop4oofhQt",
 }
-
-
-
-const getRamdomWordWithGuiones = (secretWord: string) => secretWord.replace(/./g, "_ ");
-
-const getRamdomWordWithGuionesNotSpace = (secretWord: string) => secretWord.replace(/./g, "_");
-
-
-const replaceAt = (value: string, index: number, replacement: string) => {
-  let a = value.split("");
-  a[index] = replacement;
-  return a.join("");
-}
-
-const findIndexInWord = (searchValue: string, word: string) => {
-  let indexWord = [];
-  for (let index = 0; index < word.length; index++) {
-    if (word[index] == searchValue.toLowerCase()) {
-      indexWord.push(index);
-    }
-  }
-  return indexWord;
-}
-
-const replaceWordByLetter = (palabraConGuiones: string, word: string, letter: string,) => {
-  const indexArray = findIndexInWord(letter, word);
-  console.log(indexArray);
-  indexArray.forEach(e => {
-    palabraConGuiones = replaceAt(palabraConGuiones, e, letter)
-  });
-
-  return {
-    resultNotSpace: palabraConGuiones,
-    resultWithSpace: palabraConGuiones.split("").join(" "),
-    notFound: indexArray.length === 0 || false
-  }
-};
 
 // APP
 
-const words = ["palo", "pepito", "pedro", "ramdom"];
-
-const secretWord = words[getRandomNumber(0, words.length)];
+let secretWord = removeAccents(words[getRandomNumber(0, words.length)]);
 console.log({ secretWord });
 
 const wordResultParrafo = $("#word-result");
+const imgAhorcado = $<HTMLImageElement>("#img-ahorcado");
+const letter = $<HTMLInputElement>("#letter");
 
-wordResultParrafo.innerHTML = getRamdomWordWithGuiones(secretWord);
-
-let palabraConGuionesSinEspacio = getRamdomWordWithGuionesNotSpace(secretWord);
-
-const imgAhorcado = $("#img-ahorcado") as HTMLImageElement;
 let counterError = 1;
+wordResultParrafo.innerHTML = getRamdomWordWithHyphens(secretWord);
+let palabraConGuionesSinEspacio = getRamdomWordWithHyphensNotSpace(secretWord);
+
+const resetActionGame = (image?: string) => {
+  // set image
+  if (image) imgAhorcado.src = image;
+  // set new secretWord
+  secretWord = words[getRandomNumber(0, words.length)];
+  console.log(secretWord);
+  // set secretWord with quiones in html
+  wordResultParrafo.innerHTML = getRamdomWordWithHyphens(secretWord);
+  palabraConGuionesSinEspacio = getRamdomWordWithHyphensNotSpace(secretWord);
+  // reset input and counter
+  counterError = 1;
+  letter.value = "";
+  // reset img logo
+  setTimeout(() => {
+    imgAhorcado.src = IMAGES.LOGO;
+  }, 2000);
+}
+
+const notFoundActionGame = () => {
+  if (counterError == 6) {
+    alert("Fin del juego")
+    resetActionGame()
+  } else {
+    counterError++;
+    imgAhorcado.src = `./ahorcado/${counterError}.png`;
+  }
+
+}
 
 function submitForm(e: Event) {
   e.preventDefault();
-  const letter = $("#letter") as HTMLInputElement;
   const letterValue = letter.value.toLowerCase();
-
+  
   const { notFound, resultWithSpace, resultNotSpace } = replaceWordByLetter(palabraConGuionesSinEspacio, secretWord, letterValue);
 
-  if (notFound) {
-    // ++1
-    if (counterError == 6) {
-      alert("Fin del juego")
-      setTimeout(() => {
-        location.replace("https://cdn.memegenerator.es/imagenes/memes/full/4/14/4149174.jpg");
-      }, 2000);
-    } else {
-      counterError++;
-      imgAhorcado.src = `./ahorcado/${counterError}.png`;
-    }
+  if (notFound) notFoundActionGame();
 
+  if (resultNotSpace === secretWord) {
+    // WIN
+    resetActionGame(IMAGES.GOKU_TA_BIEN);
+    return;
   }
 
+  // Normal Execution
   palabraConGuionesSinEspacio = resultNotSpace;
   wordResultParrafo.innerHTML = resultWithSpace;
 
-  // console.log("result:", palabraConGuiones);
-
 }
-$("#form-ahorcado").addEventListener("submit",submitForm);
+$("#form-ahorcado").addEventListener("submit", submitForm);
 
