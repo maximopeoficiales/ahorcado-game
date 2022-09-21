@@ -1,5 +1,5 @@
-import './main.css'
-import './style.css'
+import './main.css';
+import './style.css';
 import { words } from './common/data';
 import { $, getRamdomWordWithHyphens, getRamdomWordWithHyphensNotSpace, getRandomNumber, removeAccents, replaceWordByLetter } from './common/utils';
 
@@ -18,8 +18,9 @@ const imgAhorcado = $<HTMLImageElement>("#img-ahorcado");
 const letter = $<HTMLInputElement>("#letter");
 
 let counterError = 1;
-wordResultParrafo.innerHTML = getRamdomWordWithHyphens(secretWord);
 let palabraConGuionesSinEspacio = getRamdomWordWithHyphensNotSpace(secretWord);
+
+wordResultParrafo.innerHTML = getRamdomWordWithHyphens(secretWord);
 
 const resetActionGame = (image?: string) => {
   // set image
@@ -50,7 +51,7 @@ const notFoundActionGame = () => {
 
 }
 
-function submitForm(e: Event) {
+function submitFormHangMan(e: Event) {
   e.preventDefault();
   const letterValue = letter.value.toLowerCase();
   
@@ -69,5 +70,6 @@ function submitForm(e: Event) {
   wordResultParrafo.innerHTML = resultWithSpace;
 
 }
-$("#form-ahorcado").addEventListener("submit", submitForm);
+
+$("#form-ahorcado").addEventListener("submit", submitFormHangMan);
 

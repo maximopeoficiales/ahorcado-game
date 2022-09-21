@@ -10,7 +10,7 @@
 
 <body>
   <div class="flex justify-center my-4">
-    <div class="w-1/2">
+    <div class="w-3/4 md:w-1/2">
       <div class="my-4 p-5 border border-1 shadow-xl rounded-3xl">
         <h1 class="text-center font-bold text-4xl my-4 uppercase">HangMan</h1>
         <p class="flex justify-center">
@@ -22,12 +22,13 @@
         <form id="form-ahorcado">
           <p id="word-result" class="text-center my-4 font-bold uppercase text-3xl"></p>
           <div class="flex gap-2 items-center ">
-            <p class="w-3/4 font-semibold">Insert one letter:</p>
-            <input class="w-1/4 block border border-2 rounded-lg p-1" type="text" id="letter" required maxlength="1">
+            <p class="w-3/4 font-semibold capitalize">Insert one letter:</p>
+            <input class="w-1/4 block border-2 rounded-lg p-1 outline-none" type="text" id="letter" required maxlength="1" pattern="[A-Za-z]">
           </div>
 
           <button type="submit"
-            class="text-lg mt-4 w-full text-center bg-green-500 text-white p-3 rounded-md font-bold hover:bg-green-700 transition-all ease-out  duration-500">Verify Letter</button>
+            class="text-lg mt-4 w-full text-center bg-green-500 text-white p-3 rounded-md font-bold hover:bg-green-700 transition-all ease-out  duration-500">Verify
+            Letter</button>
 
         </form>
       </div>
